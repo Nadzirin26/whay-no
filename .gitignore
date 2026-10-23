@@ -7,3 +7,4 @@ reports/
 *.tar.gz
 .openai/deploy*
 .npm-cache/
+.vercel/

@@ -97,3 +97,14 @@ Tes mencakup detektor positif/negatif/slang/kapital, risiko sebelum provider, es
 ## Asumsi desain
 
 Versi 1 memiliki satu ruang percakapan per browser, tanpa akun, sinkronisasi, database, atau analytics. Default mendengarkan dan default demo dipilih agar pengalaman bisa dicoba tanpa kunci. Kutipan bukan jawaban klinis. Warna krem/sage/terakota, font Lora + Nunito Sans yang dibundel lokal, teks minimal 16px, ilustrasi SVG, mode malam lembut, fokus keyboard, dialog native, dan `prefers-reduced-motion` diterapkan. Struktur dan urutan pekerjaan tersedia di `PLAN.md`.
+
+## Deploy ke Vercel
+
+Repository GitHub ini berisi aplikasi langsung di root. Pilih Framework Preset **Vite**, Root Directory **./**, lalu hapus override build/output lama agar `vercel.json` berlaku. Build Command: `npm run build:vercel`; Output Directory: `dist/client`. Gunakan Node.js 22 atau 24.
+
+Frontend dilayani sebagai aset Vite. `api/chat.ts` dan `api/health.ts` adalah Vercel Node Functions dengan Web-standard fetch handler; tidak memakai server Express yang membuka port. Streaming dan deteksi krisis memakai pipeline yang sama dengan server lokal. Build Vercel tidak membuat Worker Cloudflare.
+
+Untuk mencoba, isi Environment Variables `LLM_PROVIDER=demo`. Untuk AI sungguhan, isi `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY` (serta `LLM_BASE_URL` bila kompatibel), lalu redeploy. Jangan beri prefix VITE_ pada API key. `.env` lokal tidak ikut GitHub.
+
+Setelah deployment, cek `/api/health` mengembalikan JSON, lalu coba chat. Halaman memakai hash routing sehingga tidak membutuhkan catch-all rewrite yang bisa menelan route API. Rate limit fungsi bersifat per instance; pasang pembatasan di edge untuk skala publik. Jika gagal, periksa Build Logs atau Function Logs; jangan membagikan kunci API atau isi percakapan.
+

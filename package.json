@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "concurrently -k -n web,api \"vite --host 127.0.0.1\" \"tsx watch server/index.ts\"",
     "build": "tsc --noEmit && vite build && tsx scripts/build-worker.ts",
+    "build:vercel": "tsc --noEmit && vite build",
     "start": "tsx server/index.ts",
     "lint": "eslint .",
     "test": "vitest run",
