@@ -1,0 +1,10 @@
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: { port: 5173, strictPort: true, proxy: { '/api': 'http://127.0.0.1:3001' } },
+  build: { outDir: 'dist/client', sourcemap: false },
+  test: { include: ['tests/**/*.test.{ts,tsx}'], restoreMocks: true },
+});
